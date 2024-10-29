@@ -13,15 +13,28 @@ cd restaurante_backend
 ### 2. Instalar Dependências
 ```bash
 npm install express
+npm install dotenv
 ```
 
-### 3. Rodar o Servidor
+### 3. Configurar o Arquivo `.env`
+
+Crie um arquivo `.env` na raiz do projeto para configurar as variáveis de ambiente necessárias para o servidor. Um exemplo de conteúdo para o arquivo:
+
+```env
+# Porta onde o servidor vai rodar
+PORT=
+
+```
+
+- **PORT**: Define a porta que o servidor irá usar. Pode ser ajustada conforme necessário.
+
+### 4. Rodar o Servidor
 Para iniciar o servidor, execute o comando:
 ```bash
-node index.js
+node app.js
 ```
 
-O servidor será iniciado em [http://localhost:8080](http://localhost:8080) e exibirá uma mensagem de confirmação no console.
+O servidor será iniciado e exibirá uma mensagem de confirmação no console.
 
 ## Estrutura do Projeto
 ```bash
@@ -31,6 +44,6 @@ restaurante_backend/
 │   ├── controllers/
 │   │   └── serverController.js  # Controlador com a lógica de resposta da rota
 │   ├── models/
-│   │   └──    # Modelos de dados (sem configuração adicional por enquanto)
+│   │   └── DBModel.js       # Modelos de dados (sem configuração adicional por enquanto)
 └── index.js                 # Arquivo principal que inicia o servidor
 ```
