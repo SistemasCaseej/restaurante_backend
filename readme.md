@@ -40,10 +40,11 @@ O servidor será iniciado e exibirá uma mensagem de confirmação no console.
 ```bash
 restaurante_backend/
 ├── src/
-│   ├── index.js            # Define as rotas da aplicação
+│   ├── routes/
+│   ├──    index.js            # Define as rotas da aplicação
 │   ├── controllers/
 │   │   └── serverController.js  # Controlador com a lógica de resposta da rota
 │   ├── models/
 │   │   └── DBModel.js       # Modelos de dados (sem configuração adicional por enquanto)
-└── index.js                 # Arquivo principal que inicia o servidor
+└── app.js                 # Arquivo principal que inicia o servidor
 ```
