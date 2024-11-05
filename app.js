@@ -2,12 +2,15 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-
+app.use(express.json())
 const port = process.env.PORT || 3000;
 
 const user_routes = require('./routes/user_routes');
+const item_routes = require('./routes/item_routes')
 
-app.use('/', user_routes);
+app.use('/user', user_routes);
+app.use('/item', item_routes);
+
 
 mongoose.Promise = global.Promise;
 

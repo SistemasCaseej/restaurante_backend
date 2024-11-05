@@ -22,3 +22,5 @@ const Usuario =  new Schema({
     }
 
 })
+
+module.exports = mongoose.model("Usuario", Usuario)
