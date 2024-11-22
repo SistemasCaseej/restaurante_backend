@@ -42,6 +42,16 @@ exports.list_user = (req, res) => {
   res.status(200).json(req.user);
 };
 
+exports.list_all_users = async (req, res) => {
+  try {
+    const usuarios = await Usuario.find();
+    res.status(200).json(usuarios);
+  } catch (err) {
+    console.error("Erro ao listar usuários:", err);
+    res.status(500).json({ error: "Erro ao listar usuários" });
+  }
+};
+
 
 const checkIfEmailExists = async (email) => {
   const existingUser = await Usuario.findOne({ email });

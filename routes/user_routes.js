@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const serverController = require('../controllers/user_controller');
+const userController = require('../controllers/user_controller');
 const { ensureAuthenticated, ensureAdmin } = require('../middlewares/auth');
 
-router.post('/add-user', serverController.add_user);
-router.post('/log', serverController.login_user);
-router.get('/list-user', ensureAuthenticated, serverController.list_user);
-
+router.post('/add-user', userController.add_user);
+router.post('/log', userController.login_user);
+router.get('/list-user', ensureAuthenticated, userController.list_user);
+router.get('/list-all', ensureAdmin, userController.list_all_users)
 
 module.exports = router;
