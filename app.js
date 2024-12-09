@@ -1,5 +1,7 @@
 require('dotenv').config();
 const express = require('express');
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./swagger.json')
 const cors = require('cors');
 const mongoose = require('mongoose');
 const session = require('express-session');
@@ -9,6 +11,8 @@ const {createDefaultAdmin} = require('./config/admin_account')
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+
 
 const port = process.env.PORT || 3000;
 
