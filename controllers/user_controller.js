@@ -33,7 +33,8 @@ exports.login_user = (req, res, next) => {
 
     req.logIn(usuario, (err) => {
       if (err) return res.status(500).json({ error: err.message });
-      res.status(200).json({ message: 'Login bem-sucedido', usuario });
+      userId = usuario._id;
+      res.status(200).json({ message: 'Login bem-sucedido', userId });
     });
   })(req, res, next);
 };
