@@ -37,11 +37,11 @@ mongoose.connect(process.env.DB_URL)
   })
   .catch((err) => console.error("Erro ao conectar ao MongoDB: " + err));
 
-const user_routes = require('./routes/user_routes');
-const item_routes = require('./routes/item_routes');
-const admin_routes = require('./routes/admin_routes')
+const user_routes = require('./routes/auth_user_routes');
+const admin_routes = require('./routes/admin_routes');
+const unauth_routes = require('./routes/unauth_user_routes')
 app.use('/user', user_routes);
-app.use('/item', item_routes)
+app.use(unauth_routes)
 app.use('/admin', admin_routes);
 
 app.listen(port, () => {
