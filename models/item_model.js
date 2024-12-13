@@ -10,6 +10,7 @@ const Item = new Schema({
     preco: {
         type: Number,
         required: true,
+        min:0
     },
     imgurl: {
         type: String,
@@ -18,7 +19,13 @@ const Item = new Schema({
     tags: [{
         type: mongoose.Schema.ObjectId,
         ref: 'Tag'
-    }]
+    }],
+    quantidade:{
+        type:Number,
+        required:true,
+        default:0,
+        min:0
+    }
 });
 
 module.exports = mongoose.model('Item', Item);
