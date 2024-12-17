@@ -35,6 +35,9 @@ function validarItem(item) {
         const erroPreco = validarPreco(item.preco);
         if (erroPreco) erros.push(erroPreco);
 
+        const erroQuant = validarQuantidade(item.quantidade);
+        if(erroQuant) erros.push(erroQuant);
+
         const erroDescricao = validarDescricao(item.descricao);
         if (erroDescricao) erros.push(erroDescricao);
 
@@ -60,6 +63,13 @@ function validarDescricao(descricao) {
 function validarPreco(preco) {
     if (preco === undefined || preco === null || typeof preco !== 'number' || preco <= 0) {
         return 'Preço inválido! Deve ser um número maior que zero.';
+    }
+    return null;
+}
+
+function validarQuantidade(quantidade) {
+    if (quantidade === undefined || quantidade === null || typeof quantidade !== 'number' || quantidade <= 0) {
+        return 'Quantidade inválida! Deve ser um número maior que zero.';
     }
     return null;
 }
