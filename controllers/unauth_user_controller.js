@@ -1,4 +1,5 @@
 const Usuario = require("../models/user_model");
+const Item = require('../models/item_model');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 
@@ -39,19 +40,17 @@ exports.login_user = (req, res, next) => {
   })(req, res, next);
 };
 
-exports.list_user = (req, res) => {
-  res.status(200).json(req.user);
-};
-
-exports.list_all_users = async (req, res) => {
-  try {
-    const usuarios = await Usuario.find();
-    res.status(200).json(usuarios);
-  } catch (err) {
-    console.error("Erro ao listar usuários:", err);
-    res.status(500).json({ error: "Erro ao listar usuários" });
-  }
-};
+exports.list_itens = async (req, res) => {
+    try{
+        const itens = await Item.find();
+        if(!itens || itens.length === 0){
+            res.status(200).json("Vishhh... parece que não temos itens em estoque no momento :(");
+        }
+        res.status(200).json(itens);
+    }catch(err){
+        res.status(500).json({error: err});
+    }
+}
 
 
 const checkIfEmailExists = async (email) => {
@@ -64,6 +63,29 @@ const validateEmail = (email) => {
   return emailRegex.test(email);
 };
 
+const validateSenha = (senha) => {
+  if (senha.length < 8) {
+    return "A senha deve ter pelo menos 8 caracteres.";
+  }
+
+  const hasUpperCase = /[A-Z]/.test(senha);
+  const hasLowerCase = /[a-z]/.test(senha);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(senha);
+
+  if (!hasUpperCase) {
+    return "A senha deve conter pelo menos uma letra maiúscula.";
+  }
+  if (!hasLowerCase) {
+    return "A senha deve conter pelo menos uma letra minúscula.";
+  }
+  if (!hasSpecialChar) {
+    return "A senha deve conter pelo menos um caractere especial.";
+  }
+
+  return null;
+};
+
+
 const validateRequestBodyNewAccount = (body) => {
   if (!body.nome || !body.email || !body.senha) {
     return "Todos os campos (nome, email, senha) são obrigatórios!";
@@ -71,6 +93,11 @@ const validateRequestBodyNewAccount = (body) => {
   if (!validateEmail(body.email)) {
     return "O e-mail fornecido é inválido!";
   }
+  const senhaError = validateSenha(body.senha);
+  if(senhaError){
+    return senhaError
+  }
+
   return null;
 };
 
