@@ -33,7 +33,8 @@ exports.login_user = (req, res, next) => {
 
     req.logIn(usuario, (err) => {
       if (err) return res.status(500).json({ error: err.message });
-      res.status(200).json({ message: 'Login bem-sucedido', usuario });
+      userId = usuario._id;
+      res.status(200).json({ message: 'Login bem-sucedido', userId });
     });
   })(req, res, next);
 };
@@ -63,6 +64,29 @@ const validateEmail = (email) => {
   return emailRegex.test(email);
 };
 
+const validateSenha = (senha) => {
+  if (senha.length < 8) {
+    return "A senha deve ter pelo menos 8 caracteres.";
+  }
+
+  const hasUpperCase = /[A-Z]/.test(senha);
+  const hasLowerCase = /[a-z]/.test(senha);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(senha);
+
+  if (!hasUpperCase) {
+    return "A senha deve conter pelo menos uma letra maiúscula.";
+  }
+  if (!hasLowerCase) {
+    return "A senha deve conter pelo menos uma letra minúscula.";
+  }
+  if (!hasSpecialChar) {
+    return "A senha deve conter pelo menos um caractere especial.";
+  }
+
+  return null; // Senha válida
+};
+
+
 const validateRequestBodyNewAccount = (body) => {
   if (!body.nome || !body.email || !body.senha) {
     return "Todos os campos (nome, email, senha) são obrigatórios!";
@@ -70,6 +94,11 @@ const validateRequestBodyNewAccount = (body) => {
   if (!validateEmail(body.email)) {
     return "O e-mail fornecido é inválido!";
   }
+  const senhaError = validateSenha(body.senha);
+  if(senhaError){
+    return senhaError
+  }
+
   return null;
 };
 

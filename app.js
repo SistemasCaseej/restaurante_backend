@@ -39,8 +39,10 @@ mongoose.connect(process.env.DB_URL)
 
 const user_routes = require('./routes/user_routes');
 const item_routes = require('./routes/item_routes');
+const admin_routes = require('./routes/admin_routes')
 app.use('/user', user_routes);
-app.use('/item', item_routes);
+app.use('/item', item_routes)
+app.use('/admin', admin_routes);
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
