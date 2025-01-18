@@ -12,6 +12,16 @@ exports.list_all_users = async (req, res) => {
     }
 };
 
+exports.list_all_products = async (req, res) => {
+    try{
+        const produtos = await Produto.find()
+        res.status(200).json(produtos);
+    } catch(err){
+        console.error("Erro ao listar produtos", err)
+        res.status(500).json({error: "Erro ao listar produto"})
+    }
+}
+
 exports.add_item = async (req, res) => {
     try {
         const errosValidacao = validarItem(req.body);
@@ -25,6 +35,58 @@ exports.add_item = async (req, res) => {
     } catch (err) {
         console.error('Erro ao salvar produto:', err);
         res.status(500).json({ error: 'Erro ao salvar produto' });
+    }
+};
+
+
+
+exports.delete_item = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Certifique-se de que o ID é um formato válido de ObjectId do MongoDB
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ error: "ID inválido" });
+        }
+
+        const result = await Produto.deleteOne({ _id: id });
+
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: "Produto não encontrado" });
+        }
+
+        res.status(200).json({ message: "Produto deletado com sucesso" });
+    } catch (err) {
+        console.error("Erro ao deletar produto:", err);
+        res.status(500).json({ error: "Erro ao deletar produto" });
+    }
+};
+
+
+exports.edit_item = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const updates = req.body;
+
+        const errosValidacao = validarItem(updates);
+        if (errosValidacao) {
+            return res.status(409).json({ erros: errosValidacao });
+        }
+
+        const item = await Produto.findById(id);
+        if (!item) {
+            return res.status(404).json({ error: "Item não encontrado" });
+        }
+
+        Object.keys(updates).forEach(key => {
+            item[key] = updates[key];
+        });
+
+        const itemAtualizado = await Produto.save();
+        res.status(200).json({ message: "Item atualizado com sucesso", itemAtualizado });
+    } catch (err) {
+        console.error("Erro ao editar item:", err);
+        res.status(500).json({ error: "Erro ao editar item" });
     }
 };
 
