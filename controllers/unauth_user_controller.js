@@ -1,4 +1,5 @@
 const Usuario = require("../models/user_model");
+const Item = require('../models/item_model');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 
@@ -39,19 +40,17 @@ exports.login_user = (req, res, next) => {
   })(req, res, next);
 };
 
-exports.list_user = (req, res) => {
-  res.status(200).json(req.user);
-};
-
-exports.list_all_users = async (req, res) => {
-  try {
-    const usuarios = await Usuario.find();
-    res.status(200).json(usuarios);
-  } catch (err) {
-    console.error("Erro ao listar usuários:", err);
-    res.status(500).json({ error: "Erro ao listar usuários" });
-  }
-};
+exports.list_itens = async (req, res) => {
+    try{
+        const itens = await Item.find();
+        if(!itens || itens.length === 0){
+            res.status(200).json("Vishhh... parece que não temos itens em estoque no momento :(");
+        }
+        res.status(200).json(itens);
+    }catch(err){
+        res.status(500).json({error: err});
+    }
+}
 
 
 const checkIfEmailExists = async (email) => {
@@ -83,7 +82,7 @@ const validateSenha = (senha) => {
     return "A senha deve conter pelo menos um caractere especial.";
   }
 
-  return null; // Senha válida
+  return null;
 };
 
 
