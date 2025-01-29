@@ -5,8 +5,7 @@ const AvaliacaoSchema = new Schema({
     user: {
         type: mongoose.Schema.ObjectId,
         ref: 'Usuario',
-        required: true,
-        unique:false
+        required : true,
     },
     item: {
         type: mongoose.Schema.ObjectId,
@@ -26,5 +25,7 @@ const AvaliacaoSchema = new Schema({
 }, {
     timestamps: true // Para incluir createdAt e updatedAt automaticamente
 });
+
+
 
 module.exports = mongoose.model('Avaliacao', AvaliacaoSchema);

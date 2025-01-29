@@ -18,7 +18,8 @@ const Item = new Schema({
     },
     tags: [{
         type: mongoose.Schema.ObjectId,
-        ref: 'Tag'
+        ref: 'Tag',
+        required : true
     }],
     quantidade:{
         type:Number,

@@ -1,5 +1,7 @@
 const Usuario = require("../models/user_model");
 const Produto = require("../models/item_model");
+const Tag = require("../models/tag_model")
+const Avaliacao = require("../models/Avaliacao")
 const mongoose = require('mongoose');
 
 exports.list_all_users = async (req, res) => {
@@ -11,6 +13,28 @@ exports.list_all_users = async (req, res) => {
         res.status(500).json({ error: "Erro ao listar usuários" });
     }
 };
+
+exports.add_avaliacao = async (req, res) =>{
+    try {
+        const avaliacao = new Avaliacao(req.body)
+        await avaliacao.save();
+        res.status(200).json(avaliacao);
+    } catch (error) {
+        console.error("Erro ao adicionar avaliação", err);
+        res.status(500).json({error : "Erro ao criar avaliação"})
+    }
+}
+
+exports.add_tag = async (req, res) =>{
+
+    try {
+        const tags = new Tag(req.body);
+        await tags.save();
+        res.status(201).json({message : 'Tag Criada com sucesso'})
+    } catch (error) {
+        console.error('Erro ao salvar Tag')
+    }
+}
 
 exports.add_item = async (req, res) => {
     try {
