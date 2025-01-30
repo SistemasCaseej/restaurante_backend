@@ -1,7 +1,6 @@
 const Usuario = require("../models/user_model");
 const Produto = require("../models/item_model");
 const Tag = require("../models/tag_model")
-const Avaliacao = require("../models/Avaliacao")
 const mongoose = require('mongoose');
 
 exports.list_all_users = async (req, res) => {
@@ -14,16 +13,6 @@ exports.list_all_users = async (req, res) => {
     }
 };
 
-exports.add_avaliacao = async (req, res) =>{
-    try {
-        const avaliacao = new Avaliacao(req.body)
-        await avaliacao.save();
-        res.status(200).json({message: 'Avaliação criada com sucesso', avaliacao});
-    } catch (error) {
-        console.error("Erro ao adicionar avaliação", err);
-        res.status(500).json({error : "Erro ao criar avaliação"})
-    }
-}
 
 exports.delete_item = async (req, res) => {
     try {
