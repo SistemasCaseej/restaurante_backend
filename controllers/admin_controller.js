@@ -13,6 +13,32 @@ exports.list_all_users = async (req, res) => {
     }
 };
 
+exports.edit_item = async (req, res) => {
+    try {
+        const item = await Produto.findById(req.params.id);
+
+        if (!item) {
+            return res.status(404).json({
+                message: "Item não encontrado."
+            });
+        }
+
+        Object.assign(item, req.body);
+        await item.save();
+
+        return res.status(200).json({
+            message: "Item atualizado com sucesso.",
+            item
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: "Erro ao atualizar o item.",
+            error: error.message
+        });
+    }
+};
+
 
 exports.delete_item = async (req, res) => {
     try {

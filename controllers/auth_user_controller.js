@@ -1,4 +1,5 @@
-const Avaliacao = require('../models/Avaliacao')
+const Avaliacao = require('../models/Avaliacao');
+const Produto = require('../models/item_model');
 
 exports.list_user = (req, res) => {
   res.status(200).json(req.user);
