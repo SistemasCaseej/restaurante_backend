@@ -1,7 +1,6 @@
 const Usuario = require("../models/user_model");
 const Produto = require("../models/item_model");
 const Tag = require("../models/tag_model")
-const Avaliacao = require("../models/Avaliacao")
 const mongoose = require('mongoose');
 
 exports.list_all_users = async (req, res) => {
@@ -14,16 +13,53 @@ exports.list_all_users = async (req, res) => {
     }
 };
 
-exports.add_avaliacao = async (req, res) =>{
+exports.edit_item = async (req, res) => {
     try {
-        const avaliacao = new Avaliacao(req.body)
-        await avaliacao.save();
-        res.status(200).json(avaliacao);
+        const item = await Produto.findById(req.params.id);
+
+        if (!item) {
+            return res.status(404).json({
+                message: "Item não encontrado."
+            });
+        }
+
+        Object.assign(item, req.body);
+        await item.save();
+
+        return res.status(200).json({
+            message: "Item atualizado com sucesso.",
+            item
+        });
     } catch (error) {
-        console.error("Erro ao adicionar avaliação", err);
-        res.status(500).json({error : "Erro ao criar avaliação"})
+        console.error(error);
+        return res.status(500).json({
+            message: "Erro ao atualizar o item.",
+            error: error.message
+        });
     }
-}
+};
+
+
+exports.delete_item = async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "ID inválido" });
+        }
+        const item = await Produto.findById(id);
+        
+        if (!item) {
+            return res.status(404).json({ message: "Item não encontrado" });
+        }
+        await Produto.findByIdAndDelete(id);
+        
+        return res.status(200).json({ message: "item deletado com sucesso" });
+
+    } catch (error) {
+        return res.status(500).json({ message: "Erro ao deletar item", error: error.message });
+    }
+};
 
 exports.add_tag = async (req, res) =>{
 
